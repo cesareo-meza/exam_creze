@@ -16,13 +16,27 @@ Developer Test
 ==============
 
 1.  What editor will you use to edit this file, and why?
+I will use notepad++ because it has some features to find words, move around file, 
+highlight words and show text with many code styles
 2.  Some of the questions will ask for a solution in the language of
     your choice.  What language(s) will you choose, and why?
+I will choose Java, JavaScript, C# or PL/SQL, because I'm used to those languages
+and I feel confident using them
 3.  Explain the difference between testing and debugging.
+I think testing is a process that looks for the quality of the program using 
+predefined scripts and checking that results are as expected in every situation,
+Regularly testing involves just inputs and outputs, and it does not consider source code
+Debugging is used to find causes of wrong outputs of the program execution, mainly by using source code
 4.  Consider a user querying a search engine.  Describe, in as much
     detail as you like, what happens between the user clicking the
     "submit" button and the display of the results.
-
+The submit button triggers client code in the user navigator, 
+user navigator prepares the request body and calls the Web Service that perform the desired query,
+next, Web Service receives message, extracts searching data and sends it to the database server,
+database server looks for data and send results back to the Web Service,
+now Web Service use data to create results object and send it back to user navigator,
+user navigator parses and format data to show results to the user,
+	
 The two tables below describe relationships between employees,
 managers, and departments (the columns employee.mgr_id and
 department.head both refer to employee.id).  Use these definitions to
@@ -61,18 +75,80 @@ employee                              department
 
 5.  Write an SQL query to list the full name of every employee,
     alphabetized by first name.
+SELECT name FROM EMPLOYEE EMP 
+ORDER BY EMP.name
 6.  Write an SQL query to list the full name of every employee,
     alphabetized by last name.
+SELECT substr(name, instr(name, ' '), length(name) ) as last_name, name  
+FROM EMPLOYEE EMP ORDER BY last_name
+I used Oracle functions to get substring, look for space and get length of strings
 7.  Write an SQL query to list the full name of every employee along
     with the full name of his/her manager.
+SELECT EMP.name, MGR.name FROM employee EMP 
+LEFT JOIN employee MGR ON EMP.mgr_id = MGR.id
 8.  Write an SQL query to list the full name of every employee in the
     Sales department.
+SELECT name FROM employee EMP 
+INNER JOIN department DEP 
+on EMP.mgr_id = DEP.head 
+OR EMP.id = DEP.head 
+WHERE DEP.name = 'Sales'
 9.  Write an SQL query to list the full name of every employee along
     with name of his/her department.
+SELECT EMP.name, DEP.name FROM employee EMP 
+LEFT JOIN department DEP 
+ON EMP.mgr_id = DEP.head 
+OR EMP.id = DEP.head
 10. Is there a better design for a database that supports the queries
     described in questions 5-9?  If so, describe it.  If not, why not?
+It is better to avoid operations in select clauses, I would create a column to hold employee last name,
+Department entity should have its own id, and it would be necessary to create a new table to relate 
+employees to their department, this would help to really have a department entity and not just an extra field
+for an employee
 11. Write a function in the language of your choice that implements
     quicksort on an array of integers.
+//I red the sort process definition in wikipedia
+	
+var data = [8,5,6,2,9,4,5,8,4,0];
+var result = quickorder(data);
+console.log('result: ' + result);
+
+function quickorder(input_array)
+{
+  var pivot;
+  var array1=[];
+  var array2=[];
+  var result=[];
+
+  //select pivot
+  if(input_array.length > 1)
+  {
+  	pivot = input_array[0];
+  }
+  else
+  {
+  	return input_array;
+  }
+  
+  //divide
+  for(i=1; i<input_array.length; i++)
+  {
+  	if(input_array[i] > pivot)
+    {
+    	array2.push(input_array[i]);
+    }else
+    {
+    	array1.push(input_array[i]);
+    }
+  }
+  //order new arrays
+
+  result.push(quickorder(array1));
+  result.push(pivot);
+  result.push(quickorder(array2));
+  
+  return result;
+}
 12. Write a function in the language of your choice that performs
     binary search on a sorted array of integers.
 13. Write a function in the language of your choice performs the query
