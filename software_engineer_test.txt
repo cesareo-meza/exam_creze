@@ -17,7 +17,7 @@ Developer Test
 
 1.  What editor will you use to edit this file, and why?
 I will use notepad++ because it has some features to find words, move around file, 
-highlight words and show text with many code styles
+highlight words and show text with many code styles, I also used Python GUI and https://jsfiddle.net/ to be able to check
 2.  Some of the questions will ask for a solution in the language of
     your choice.  What language(s) will you choose, and why?
 I will choose Java, JavaScript, C# or PL/SQL, because I'm used to those languages
@@ -151,11 +151,107 @@ function quickorder(input_array)
 }
 12. Write a function in the language of your choice that performs
     binary search on a sorted array of integers.
+var data = [0,2,4,4,5,5,6,8,8,9];
+var target = 9;
+var result = binary_search(data, target);
+
+console.log('result: ' + result);
+
+function binary_search(input_array, target)
+{
+	var pivot;
+	var arrayLenght = input_array.length;
+ 	
+	pivot = arrayLenght == 1 ? 0 : Math.ceil(arrayLenght / 2) - 1;
+
+	if(input_array[pivot] == target)
+		return pivot;
+
+	if(input_array[pivot] < target)
+	{
+		return  (pivot == 0 ? 1 : pivot + 1) + binary_search(input_array.slice(pivot + 1, arrayLenght), target);  	
+	}
+
+	if(input_array[pivot] > target)
+	{
+		return binary_search(input_array.slice(0, pivot), target);  	
+	}  
+}  	
 13. Write a function in the language of your choice performs the query
     you wrote for question 7, and outputs the results as an HTML table.
+I used codeproject to remember how to connect to DB using commands, 
+http://www.codeproject.com/Articles/4416/Beginners-guide-to-accessing-SQL-Server-through-C
+public string queryEmployees()
+{
+	StringBuilder result = "<table>";
+								"<tr>" +
+									"<th>Employee</th>" +
+									"<th>Manager</th>" +
+								"</tr>" +
+								"@content" +
+							"</table>";
+	
+	StringBuilder content = "";
+	
+	SqlDataReader myReader = null;
+	SqlCommand myCommand = new SqlCommand("SELECT EMP.name emp, MGR.name mgr FROM employee EMP LEFT JOIN employee MGR ON EMP.mgr_id = MGR.id", 
+							 myConnection);
+	
+	myReader = myCommand.ExecuteReader();
+	
+	while(myReader.Read())
+	{
+		content.Append("<tr><td>" + myReader["emp"].ToString() + "</td><td>" + myReader["mgr"].ToString() + "</td></tr>");
+	}
+	
+	return result.Replace("@content", content.ToString()).ToString;
+}
 14. Write a program in the language of your choice that takes a filename
     and a number N as arguments and retrieves and outputs the Nth line
     from the file.
+I was running out of time that I decided to look for an easy language, im a beginner with python
+I look for a method to read the file in http://stackoverflow.com/questions/16222956
+def readFile(fileName, lineNumber):
+    counter=1
+    with open(fileName) as myfile:
+        for line in myfile:
+            if counter == lineNumber :
+                return line
+            counter=counter + 1
+
+print( readFile('c:\dir.txt', 20) )
 15. Write the function from question 12 in a different language.
+import math
+
+def binarySearch(input_array, target):
+    
+    arrayLenght = len(input_array)
+
+    pivot = 0 if arrayLenght == 1 else (math.ceil(arrayLenght / 2) - 1)
+
+    print(input_array)
+    print(pivot)
+    print(input_array[pivot])
+
+    if(input_array[pivot] == target):
+        return pivot
+
+    if(input_array[pivot] < target):
+        return  (1 if pivot == 0 else pivot + 1) + binarySearch(input_array[pivot+1:arrayLenght], target)
+
+    if(input_array[pivot] > target):
+        return binarySearch(input_array[:pivot], target)
+
+data = [0,2,4,4,5,5,6,8,8,9]
+target = 5
+result = binarySearch(data, target)
+
+print('result: ' + str(result))
 16. Write the program from question 14 in a different language (it can
     be the same language you used for #15, but it doesn't have to be).
+public string readFile(string fileName, int lineNumber)
+{
+	string[] fileLines = System.IO.File.ReadAllLines(fileName);
+
+	return fileLines[lineNumber + 1];
+}
